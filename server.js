@@ -5,7 +5,13 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://todolist-7ap4.onrender.com', 
+    'http://localhost:5500' // (optional) for local testing
+  ],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
