@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <title>Uzdevumu saraksts</title>
+  <style>
+
+    select {
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e0dccb;
+  background: #fdf6e3;
+  color: #5c5246;
+  margin-bottom: 12px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+    body {
+      background: #fdf6e3;
+      color: #5c5246;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 650px;        
+      margin: 40px auto;
+      background: #fffbe6;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #e0dccb;
+      padding: 48px 48px 36px 48px; 
+      box-sizing: border-box;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    input, button {
+      font-size: 1rem;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e0dccb;
+      margin-bottom: 12px;
+      outline: none;
+      box-sizing: border-box; 
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      margin-bottom: 16px;
+      background: #fdf6e3;
+      box-sizing: border-box; 
+    }
+    input#username {
+      margin-top: 16px; 
+    }
+    button {
+      background: #f5e9c8;
+      color: #5c5246;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 8px;
+    }
+    button:hover {
+      background: #f7dba7;
+    }
+    .task-list {
+      margin-top: 24px;
+    }
+    .task {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px #ece6d1;
+      display: flex;
+      flex-direction: column; 
+      align-items: stretch;
+      gap: 8px;
+    }
+    .task input[type="text"] {
+        margin: 0;
+        background: #fffbe6;
+        border: none;
+        font-size: 1rem;
+        width: 80%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .task input[type="text"]:nth-child(2) {
+        width: 40%;
+    }
+    .task .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.task .actions button {
+      margin-right: 0;
+      margin-left: 8px;
+      padding: 4px 10px;
+      font-size: 0.95rem;
+    }
+    .task textarea {
+  font-size: 1rem;
+  background: #fffbe6;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 0 8px 0 0;
+  box-sizing: border-box;
+  color: #5c5246;
+  resize: none;
+  min-height: 32px;
+  width: 100%;
+  max-width: 100%;
+  overflow-y: hidden;
+  line-height: 1.5;
+  display: block;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Uzdevumu saraksts</h2>
+    <input id="username" placeholder="Lietotājvārds" type="text" />
+    <input id="password" placeholder="Parole" type="password" />
+    <button onclick="signup()">Reģistrēties</button>
+    <button onclick="login()">Pieslēgties</button>
+    <div style="margin-bottom:16px;">
+      <span id="userInfo"></span>
+      <button id="logoutBtn" style="display:none; margin-left:12px;">Izrakstīties</button>
+    </div>
+    <div style="margin-top:20px;">
+      <input id="newTask" placeholder="Jauns uzdevums..." type="text" />
+      <input id="newDesc" placeholder="Apraksts..." type="text" />
+      <select id="newStatus">
+        <option value="nepabeigts">Nepabeigts</option>
+        <option value="pabeigts">Pabeigts</option>
+      </select>
+      <button onclick="addTask()">Pievienot</button>
+    </div>
+    <div id="tasks" class="task-list"></div>
+  </div>
+  <div id="commentModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); align-items:center; justify-content:center; z-index:1000;">
+  <div style="background:#fffbe6; border-radius:12px; padding:24px; min-width:320px; max-width:90vw; box-shadow:0 2px 12px #e0dccb; position:relative;">
+    <button id="closeCommentModal" style="position:absolute; top:8px; right:12px; background:none; border:none; font-size:1.5rem; cursor:pointer;">×</button>
+    <h3>Komentāri</h3>
+    <div id="commentsList" style="max-height:250px; overflow-y:auto; margin-bottom:16px;"></div>
+    <textarea id="newCommentText" placeholder="Raksti komentāru..." style="width:100%; border-radius:8px; border:1px solid #e0dccb; padding:8px; margin-bottom:8px;"></textarea>
+    <button id="addCommentBtn" style="background:#f5e9c8; color:#5c5246; border:none; border-radius:8px; padding:8px 16px; cursor:pointer;">Pievienot komentāru</button>
+  </div>
+</div>
+  <script src="script.js"></script>
+  <script>
+function autoResize(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+  </script>
+</body>
+</html>
