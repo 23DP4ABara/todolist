@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000';
+const API = 'https://todolist123123.onrender.com';
 
 async function signup() {
   const username = document.getElementById('username').value;
